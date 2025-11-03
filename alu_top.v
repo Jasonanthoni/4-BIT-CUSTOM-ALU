@@ -1,12 +1,12 @@
-
 module alu_top (
-    input  [3:0] A,       
-    input  [3:0] B,         
-    input  [2:0] opcode,     
-    output reg [7:0] result, 
-    output reg carry_out    
+    input  [3:0] A,        // input A
+    input  [3:0] B,        // input B
+    input  [2:0] opcode,   // control signal to select operation
+    output reg [7:0] result, // output result
+    output reg carry_out     // output carry flag
 );
 
+     // internal wires for each operation
     wire [4:0] add_out;  
     wire [4:0] sub_out;
     wire [7:0] mul_out;
@@ -16,16 +16,17 @@ module alu_top (
     wire [7:0] cmp_out;
     wire [7:0] avg_out;
 
-    add U1 (.A(A), .B(B), .SUM(add_out[3:0]), .COUT(add_out[4]));
-    sub U2 (.A(A), .B(B), .DIFF(sub_out[3:0]), .COUT(sub_out[4]));
-    mul U3 (.A(A), .B(B), .product(mul_out));
-    div U4 (.A(A), .B(B), .QUO(div_out));
-    nand_g U5 (.A(A), .B(B), .Y(nand_out));
-    not_g U6 (.A(A), .Y(not_out));
-    cmp U7 (.A(A), .B(B), .Y(cmp_out));
-    avg U8 (.A(A), .B(B), .Y(avg_out));
+    // connect submodules
+    add   U1 (.A(A), .B(B), .SUM(add_out[3:0]), .COUT(add_out[4]));    // adder
+    sub   U2 (.A(A), .B(B), .DIFF(sub_out[3:0]), .COUT(sub_out[4]));   // subtractor
+    mul   U3 (.A(A), .B(B), .product(mul_out));                        // multiplier
+    div   U4 (.A(A), .B(B), .QUO(div_out));                            // divider
+    nand_g U5 (.A(A), .B(B), .Y(nand_out));                            // NAND gate
+    not_g  U6 (.A(A), .Y(not_out));                                    // NOT gate
+    cmp    U7 (.A(A), .B(B), .Y(cmp_out));                             // comparator
+    avg    U8 (.A(A), .B(B), .Y(avg_out));                              // average calculator
 
-   
+    // select operation based on opcode
     always @(*) begin
         case (opcode)
             3'b000: begin // ADD
@@ -48,19 +49,19 @@ module alu_top (
                 result    = {nand_out};
                 carry_out = 1'b0;
             end
-            3'b101: begin // NOT (A only)
+            3'b101: begin // NOT
                 result    = {not_out};
                 carry_out = 1'b0;
             end
-            3'b110: begin // CMP 
+            3'b110: begin // CMP
                 result    = cmp_out;
                 carry_out = 1'b0;
             end
-            3'b111: begin // AVG ((A + B) / 2)
+            3'b111: begin // AVG
                 result    = avg_out;
                 carry_out = 1'b0;
             end
-            default: begin
+            default: begin // default case
                 result    = 8'b00000000;
                 carry_out = 1'b0;
             end
