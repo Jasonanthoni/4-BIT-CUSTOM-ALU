@@ -1,7 +1,8 @@
 module mul (
     input  [3:0] A, B,
-    output [7:0] PRODUCT
+    output [7:0] product
 );
-    assign PRODUCT = A * B;
+    assign product = A * B;
 
 endmodule
+
