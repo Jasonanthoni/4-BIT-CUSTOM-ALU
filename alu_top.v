@@ -11,8 +11,8 @@ module alu_top (
     wire [4:0] sub_out;
     wire [7:0] mul_out;
     wire [7:0] div_out;
-    wire [3:0] nand_out;
-    wire [3:0] not_out;
+    wire [7:0] nand_out;
+    wire [7:0] not_out;
     wire [7:0] cmp_out;
     wire [7:0] avg_out;
 
@@ -45,11 +45,11 @@ module alu_top (
                 carry_out = 1'b0;
             end
             3'b100: begin // NAND
-                result    = {4'b0000, nand_out};
+                result    = {nand_out};
                 carry_out = 1'b0;
             end
             3'b101: begin // NOT (A only)
-                result    = {4'b0000, not_out};
+                result    = {not_out};
                 carry_out = 1'b0;
             end
             3'b110: begin // CMP 
