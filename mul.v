@@ -1,6 +1,7 @@
-module multiplier4 (
+module mul (
     input  [3:0] A, B,
     output [7:0] PRODUCT
 );
     assign PRODUCT = A * B;
+
 endmodule
