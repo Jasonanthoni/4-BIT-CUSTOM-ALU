@@ -1,4 +1,4 @@
-module compare(input [3:0] A, B, output reg [7:0] Y);
+module cmp(input [3:0] A, B, output reg [7:0] Y);
     always @(*) begin
         if (A == B)
             Y = 8'b00000001;   // Equal
@@ -7,4 +7,5 @@ module compare(input [3:0] A, B, output reg [7:0] Y);
         else
             Y = 8'b00000100;   // Less
     end
+
 endmodule
